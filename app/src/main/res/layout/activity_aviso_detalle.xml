@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8FAFC">
+
+    <!-- CABECERA DE COLOR FIJA (Altura exacta para que termine antes de las tarjetas) -->
+    <View
+        android:id="@+id/bgCabeceraDetalle"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="#0EA5E9"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Botón de Volver (Con margen de 48dp para esquivar la hora y la batería) -->
+    <FrameLayout
+        android:id="@+id/btnVolverDetalle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/bg_icono_cristal"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_flecha_volver" />
+    </FrameLayout>
+
+    <!-- Etiqueta de Prioridad -->
+    <TextView
+        android:id="@+id/lblPrioridadDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/bg_badge_alta"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
+        android:text="Prioridad ALTA"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btnVolverDetalle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnVolverDetalle" />
+
+    <!-- Icono del Oficio FIJO -->
+    <FrameLayout
+        android:id="@+id/cajaIconoDetalle"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_icono_cristal"
+        app:layout_constraintStart_toStartOf="@+id/btnVolverDetalle"
+        app:layout_constraintTop_toBottomOf="@+id/btnVolverDetalle">
+        <ImageView
+            android:id="@+id/iconoOficioDetalle"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_gota"
+            app:tint="#0F172A" />
+    </FrameLayout>
+
+    <!-- Textos Cabecera FIJOS -->
+    <TextView
+        android:id="@+id/lblCategoriaDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="FONTANERÍA"
+        android:textColor="#E2E8F0"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/cajaIconoDetalle"
+        app:layout_constraintTop_toTopOf="@+id/cajaIconoDetalle" />
+
+    <TextView
+        android:id="@+id/lblClienteDetalle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="Restaurante El Buen Sabor"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/lblCategoriaDetalle"
+        app:layout_constraintTop_toBottomOf="@+id/lblCategoriaDetalle" />
+
+    <!-- CONTENIDO DESLIZABLE (Empieza ESTRICTAMENTE debajo del color y hace tope con el botón inferior) -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/bgCabeceraDetalle"
+        app:layout_constraintBottom_toTopOf="@+id/contenedorBotonInferior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp">
+
+            <!-- TARJETA 1: Descripción -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:background="#FFFFFF">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Descripción del Problema"
+                        android:textColor="#0F172A"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_portapapeles"
+                        android:drawablePadding="12dp"
+                        app:drawableTint="#2563EB" />
+                    <TextView
+                        android:id="@+id/txtDescripcionDetalle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Fuga de agua en la cocina principal."
+                        android:textColor="#64748B"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- TARJETA 2: Información del Cliente -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:background="#FFFFFF">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Información del Cliente"
+                        android:textColor="#0F172A"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_usuario"
+                        android:drawablePadding="12dp"
+                        app:drawableTint="#9333EA"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- Dirección -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_ubicacion"
+                            app:tint="#94A3B8" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="12dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Dirección"
+                                android:textSize="11sp"
+                                android:textColor="#94A3B8"/>
+                            <TextView
+                                android:id="@+id/txtDireccionDetalle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Calle Mayor 45, Madrid"
+                                android:textSize="14sp"
+                                android:textColor="#0F172A"/>
+                        </LinearLayout>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/btnNavegarDetalle"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            app:cardBackgroundColor="#DBEAFE"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="0dp"
+                            android:clickable="true"
+                            android:focusable="true">
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_nav_blue" />
+                        </androidx.cardview.widget.CardView>                    </LinearLayout>
+
+                    <!-- Teléfono -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_phone_green"
+                            app:tint="#94A3B8" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="12dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Teléfono"
+                                android:textSize="11sp"
+                                android:textColor="#94A3B8"/>
+                            <TextView
+                                android:id="@+id/txtTelefonoDetalle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="+34 912 345 678"
+                                android:textSize="14sp"
+                                android:textColor="#0F172A"/>
+                        </LinearLayout>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/btnLlamarDetalle"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            app:cardBackgroundColor="#DCFCE7"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="0dp"
+                            android:clickable="true"
+                            android:focusable="true">
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_phone_green" />
+                        </androidx.cardview.widget.CardView>                    </LinearLayout>
+
+                    <!-- Fecha de Creación -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_calendar_detalle" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="12dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Creado"
+                                android:textSize="11sp"
+                                android:textColor="#94A3B8"/>
+                            <TextView
+                                android:id="@+id/txtFechaDetalle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2 de marzo de 2026 a las 09:00"
+                                android:textSize="14sp"
+                                android:textColor="#0F172A"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- TARJETA 3: Estado -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:background="#FFFFFF"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Estado Actual"
+                            android:textColor="#64748B"
+                            android:textSize="12sp" />
+                        <TextView
+                            android:id="@+id/txtEstadoDetalle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PENDIENTE"
+                            android:textColor="#2563EB"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="4dp"/>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/imgEstadoPunto"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_punto_estado" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- BOTÓN INFERIOR FIJO CON CONTENEDOR (Resuelve el solapamiento de teclas táctiles) -->
+    <FrameLayout
+        android:id="@+id/contenedorBotonInferior"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:paddingTop="16dp"
+        android:paddingBottom="42dp"
+        android:paddingHorizontal="24dp"
+        android:elevation="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/btnIniciarTrabajo"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_boton"
+            android:backgroundTint="#10B981"
+            android:text="Iniciar Trabajo"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:drawableStart="@drawable/ic_play_white"
+            android:paddingStart="80dp"
+            android:paddingEnd="100dp"
+            android:clickable="true"
+            android:focusable="true"/>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

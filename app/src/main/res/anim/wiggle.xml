@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/accelerate_decelerate_interpolator">
+
+    <!-- Gira un poquito a la izquierda (-15 grados) -->
+    <rotate
+        android:duration="150"
+        android:fromDegrees="0"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="2000"
+        android:toDegrees="-15" />
+
+    <!-- Luego va hacia la derecha (+15 grados) -->
+    <rotate
+        android:duration="150"
+        android:fromDegrees="-15"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="2150"
+        android:toDegrees="15" />
+
+    <!-- Y vuelve a su sitio (0 grados) -->
+    <rotate
+        android:duration="150"
+        android:fromDegrees="15"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="2300"
+        android:toDegrees="0" />
+</set>
