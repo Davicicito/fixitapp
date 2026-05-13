@@ -17,7 +17,6 @@ public class PerfilActivity extends AppCompatActivity {
         TextView btnVolver = findViewById(R.id.btnVolver);
         TextView btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
 
-        // Recogemos los datos que nos manda la otra pantalla
         String nombre = getIntent().getStringExtra("TECNICO_NOMBRE");
         String especialidad = getIntent().getStringExtra("TECNICO_ESPECIALIDAD"); // <-- NUEVO
 
@@ -25,7 +24,6 @@ public class PerfilActivity extends AppCompatActivity {
             lblNombrePerfil.setText(nombre);
         }
 
-        // Escribimos la especialidad real
         if (especialidad != null && !especialidad.isEmpty()) {
             lblEspecialidadPerfil.setText("Especialista en " + especialidad);
         }

@@ -27,6 +27,8 @@
         <activity android:name=".AvisosActivity" />
         <activity android:name=".PerfilActivity" />
         <activity android:name=".AvisoDetalleActivity" />
+        <activity android:name=".TrabajoProgresoActivity" />
+        <activity android:name=".FirmaActivity" />
 
     </application>
 

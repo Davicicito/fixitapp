@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="#F8FAFC">
 
-    <!-- Fondo curvo (lo he hecho un poco más alto para compensar) -->
     <View
         android:id="@+id/headerBg"
         android:layout_width="match_parent"
@@ -14,7 +13,7 @@
         android:background="@drawable/bg_header_curvo"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Botón Volver (Con marginTop de 48dp para esquivar la hora y el notch) -->
+    <!-- Botón Volver -->
     <TextView
         android:id="@+id/btnVolver"
         android:layout_width="wrap_content"
@@ -34,7 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Tarjeta de Perfil flotante (Bajada a 130dp para mantener la proporción) -->
+    <!-- Tarjeta de Perfil -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardPerfil"
         android:layout_width="match_parent"
@@ -88,7 +87,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Botón Cerrar Sesión (Rojo) - Con más margen abajo -->
+    <!-- Botón Cerrar Sesión -->
     <TextView
         android:id="@+id/btnCerrarSesion"
         android:layout_width="match_parent"

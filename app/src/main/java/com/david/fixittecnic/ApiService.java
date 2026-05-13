@@ -14,4 +14,10 @@ public interface ApiService {
 
     @GET("api/avisos/tecnico/{id}")
     Call<List<Aviso>> getAvisosPorTecnico(@Path("id") Long idTecnico);
+
+    @GET("materiales")
+    Call<List<MaterialApi>> obtenerListaMateriales();
+
+    @POST("avisos/{id}/finalizar")
+    Call<Object> finalizarAviso(@Path("id") Long idAviso, @Body FinalizarAvisoRequest peticion);
 }

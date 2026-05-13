@@ -32,7 +32,7 @@ public class AvisosAdapter extends RecyclerView.Adapter<AvisosAdapter.AvisoViewH
     public void onBindViewHolder(@NonNull AvisoViewHolder holder, int position) {
         Aviso aviso = listaAvisos.get(position);
 
-        // 1. Extraer datos anidados con cuidado por si vienen nulos
+        // 1. Extraer datos anidados
         String nombreCliente = (aviso.getCliente() != null && aviso.getCliente().getNombre() != null)
                 ? aviso.getCliente().getNombre() : "Cliente Desconocido";
 
@@ -42,7 +42,6 @@ public class AvisosAdapter extends RecyclerView.Adapter<AvisosAdapter.AvisoViewH
         String nombreCategoria = (aviso.getCategoria() != null && aviso.getCategoria().getNombre() != null)
                 ? aviso.getCategoria().getNombre().toUpperCase() : "GENERAL";
 
-        // 2. 🔥 LÓGICA DE FECHA Y HORA MEJORADA 🔥
         String textoFechaHora = "--:--";
         if (aviso.getFechaCreacion() != null && aviso.getFechaCreacion().contains("T")) {
             try {
@@ -65,14 +64,14 @@ public class AvisosAdapter extends RecyclerView.Adapter<AvisosAdapter.AvisoViewH
             }
         }
 
-        // 3. Rellenar los textos
+
         holder.txtCliente.setText(nombreCliente);
         holder.txtDescripcion.setText(aviso.getDescripcion());
         holder.txtDireccion.setText(direccionCliente);
         holder.txtHora.setText(textoFechaHora);
         holder.txtNombreCategoria.setText(nombreCategoria);
 
-        // 4. Magia de Colores: Categorías Blindadas
+
         String catNormalizada = nombreCategoria.toUpperCase();
 
         if (catNormalizada.contains("FONTANER")) {
@@ -92,7 +91,7 @@ public class AvisosAdapter extends RecyclerView.Adapter<AvisosAdapter.AvisoViewH
             holder.imgCategoria.setImageResource(R.drawable.ic_portapapeles);
         }
 
-        // 5. Magia de Colores: Prioridad (SOLO UNA VEZ)
+
         String prioridad = aviso.getPrioridad() != null ? aviso.getPrioridad().toUpperCase() : "MEDIA";
         holder.txtPrioridad.setText(prioridad);
 
@@ -104,12 +103,14 @@ public class AvisosAdapter extends RecyclerView.Adapter<AvisosAdapter.AvisoViewH
             holder.txtPrioridad.setBackgroundResource(R.drawable.bg_badge_baja);
         }
 
-        // 🔥 EL TRUCO NINJA: Congelamos la variable para que Java no llore en el clic 🔥
+
         final String fechaFinalParaIntent = textoFechaHora;
 
-        // 🔥 AQUÍ VA EL CLIC 🔥
+
         holder.itemView.setOnClickListener(v -> {
             android.content.Intent intent = new android.content.Intent(v.getContext(), AvisoDetalleActivity.class);
+
+            intent.putExtra("ID", aviso.getId());
 
             intent.putExtra("CATEGORIA", nombreCategoria);
             intent.putExtra("CLIENTE", nombreCliente);

@@ -6,10 +6,8 @@ public class Aviso {
     private String estado;
     private String prioridad;
 
-    // Spring Boot envía el LocalDateTime como un texto
     private String fechaCreacion;
 
-    // Recogemos los objetos anidados
     private ClienteDTO cliente;
     private CategoriaDTO categoria;
 
@@ -22,15 +20,15 @@ public class Aviso {
     public ClienteDTO getCliente() { return cliente; }
     public CategoriaDTO getCategoria() { return categoria; }
 
-    // --- SUB-MOLDES (Data Transfer Objects) ---
+
     public static class ClienteDTO {
         private String nombre;
         private String direccion;
-        private String telefono; // 🔥 AÑADIDO EL TELÉFONO AQUÍ 🔥
+        private String telefono;
 
         public String getNombre() { return nombre; }
         public String getDireccion() { return direccion; }
-        public String getTelefono() { return telefono; } // 🔥 Y SU GETTER AQUÍ 🔥
+        public String getTelefono() { return telefono; }
     }
 
     public static class CategoriaDTO {

@@ -10,7 +10,7 @@ public class Tecnico {
     private Double calificacion;
     private Boolean activo;
 
-    // Getters para poder leer los datos en el móvil
+
     public Long getId() { return id; }
     public String getNombre() { return nombre; }
     public String getEmail() { return email; }

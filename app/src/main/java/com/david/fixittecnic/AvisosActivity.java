@@ -24,6 +24,7 @@ public class AvisosActivity extends AppCompatActivity {
     private RecyclerView recyclerAvisos;
     private AvisosAdapter adapter;
     private View btnPerfil;
+    private Long idTecnicoGlobal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,24 +40,22 @@ public class AvisosActivity extends AppCompatActivity {
 
         recyclerAvisos.setLayoutManager(new LinearLayoutManager(this));
 
-        // 2. Recogemos quién inició sesión
         String nombre = getIntent().getStringExtra("TECNICO_NOMBRE");
-        Long idTecnico = getIntent().getLongExtra("TECNICO_ID", -1);
 
-        // 🔥 NUEVO: Recogemos la especialidad
+        idTecnicoGlobal = getIntent().getLongExtra("TECNICO_ID", -1L);
+
+        // Recogemos la especialidad
         String especialidad = getIntent().getStringExtra("TECNICO_ESPECIALIDAD");
 
         if (nombre != null) {
             lblNombreTecnico.setText(nombre);
         }
 
-        if (idTecnico != -1) {
-            cargarAvisosDelServidor(idTecnico);
-
+        if (idTecnicoGlobal != -1L) {
             if (btnCampana != null) {
                 btnCampana.setOnClickListener(v -> {
                     Toast.makeText(AvisosActivity.this, "Actualizando avisos...", Toast.LENGTH_SHORT).show();
-                    cargarAvisosDelServidor(idTecnico);
+                    cargarAvisosDelServidor(idTecnicoGlobal);
                 });
             }
         }
@@ -65,12 +64,18 @@ public class AvisosActivity extends AppCompatActivity {
             btnPerfil.setOnClickListener(v -> {
                 Intent intent = new Intent(AvisosActivity.this, PerfilActivity.class);
                 intent.putExtra("TECNICO_NOMBRE", nombre);
-
-                // 🔥 NUEVO: Se la pasamos a la pantalla de Perfil
                 intent.putExtra("TECNICO_ESPECIALIDAD", especialidad);
-
                 startActivity(intent);
             });
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Si tenemos el ID válido, forzamos a que vuelva a pedir la lista al servidor
+        if (idTecnicoGlobal != null && idTecnicoGlobal != -1L) {
+            cargarAvisosDelServidor(idTecnicoGlobal);
         }
     }
 
@@ -81,6 +86,7 @@ public class AvisosActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Aviso> lista = response.body();
 
+                    // Filtramos para que los avisos completados no estorben o se ordenen bien
                     Collections.sort(lista, new Comparator<Aviso>() {
                         @Override
                         public int compare(Aviso a1, Aviso a2) {
@@ -91,7 +97,6 @@ public class AvisosActivity extends AppCompatActivity {
                     });
 
                     String totalTrabajos = String.valueOf(lista.size());
-
                     lblContadorAvisos.setText(totalTrabajos);
 
                     if (lblNotificacionRoja != null) {
@@ -105,7 +110,6 @@ public class AvisosActivity extends AppCompatActivity {
 
                     adapter = new AvisosAdapter(lista);
                     recyclerAvisos.setAdapter(adapter);
-
                     recyclerAvisos.scrollToPosition(0);
 
                 } else {

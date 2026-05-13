@@ -2,7 +2,7 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:interpolator="@android:anim/accelerate_decelerate_interpolator">
 
-    <!-- Gira un poquito a la izquierda (-15 grados) -->
+    <!-- Gira a la izquierda -15 grados -->
     <rotate
         android:duration="150"
         android:fromDegrees="0"
@@ -11,7 +11,7 @@
         android:startOffset="2000"
         android:toDegrees="-15" />
 
-    <!-- Luego va hacia la derecha (+15 grados) -->
+    <!-- Luego va hacia la derecha +15 grados -->
     <rotate
         android:duration="150"
         android:fromDegrees="-15"
@@ -20,7 +20,7 @@
         android:startOffset="2150"
         android:toDegrees="15" />
 
-    <!-- Y vuelve a su sitio (0 grados) -->
+    <!-- Y vuelve a su sitio 0 grados -->
     <rotate
         android:duration="150"
         android:fromDegrees="15"

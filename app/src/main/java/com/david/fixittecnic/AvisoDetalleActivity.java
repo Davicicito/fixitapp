@@ -11,6 +11,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AvisoDetalleActivity extends AppCompatActivity {
@@ -26,7 +29,7 @@ public class AvisoDetalleActivity extends AppCompatActivity {
         ImageView iconoOficio = findViewById(R.id.iconoOficioDetalle);
         ImageView imgEstadoPunto = findViewById(R.id.imgEstadoPunto);
 
-        // 🔥 NUEVOS BOTONES 🔥
+        // BOTONES
         View btnNavegar = findViewById(R.id.btnNavegarDetalle);
         View btnLlamar = findViewById(R.id.btnLlamarDetalle);
 
@@ -38,9 +41,28 @@ public class AvisoDetalleActivity extends AppCompatActivity {
         TextView txtTelefono = findViewById(R.id.txtTelefonoDetalle);
         TextView txtFecha = findViewById(R.id.txtFechaDetalle);
         TextView txtEstado = findViewById(R.id.txtEstadoDetalle);
-        TextView btnIniciarTrabajo = findViewById(R.id.btnIniciarTrabajo);
+        View btnIniciarTrabajo = findViewById(R.id.btnIniciarTrabajo);
 
-        // 2. Recibimos los datos de la pantalla anterior
+        long idAviso = getIntent().getLongExtra("ID", -1L);
+
+        if (idAviso == -1L) {
+            idAviso = getIntent().getIntExtra("ID", -1);
+        }
+        if (idAviso == -1L) {
+            String idStr = getIntent().getStringExtra("ID");
+            if (idStr != null && !idStr.isEmpty()) {
+                try {
+                    idAviso = Long.parseLong(idStr);
+                } catch (NumberFormatException e) {
+                    idAviso = -1L;
+                }
+            }
+        }
+
+        if (idAviso == -1L) {
+            Toast.makeText(this, "El Adapter no está enviando el ID a esta pantalla", Toast.LENGTH_LONG).show();
+        }
+
         String categoria = getIntent().getStringExtra("CATEGORIA");
         String cliente = getIntent().getStringExtra("CLIENTE");
         String prioridad = getIntent().getStringExtra("PRIORIDAD");
@@ -69,7 +91,7 @@ public class AvisoDetalleActivity extends AppCompatActivity {
             lblPrioridad.setBackgroundResource(R.drawable.bg_badge_baja);
         }
 
-        // 4. MAGIA DE TEMAS
+        // 4. TEMAS
         String catNormalizada = categoria != null ? categoria.toUpperCase() : "";
         int[] coloresDegradado;
 
@@ -94,19 +116,20 @@ public class AvisoDetalleActivity extends AppCompatActivity {
         Animation latido = AnimationUtils.loadAnimation(this, R.anim.latido);
         imgEstadoPunto.startAnimation(latido);
 
-        // ==========================================
-        // 6. 🔥 ACCIONES DE LOS BOTONES 🔥
-        // ==========================================
 
+        // 6. ACCIONES DE LOS BOTONES
         btnVolver.setOnClickListener(v -> finish());
 
         // Botón Llamar
         if (btnLlamar != null) {
             btnLlamar.setOnClickListener(v -> {
                 if (telefono != null && !telefono.isEmpty()) {
-                    // ACTION_DIAL abre la app de teléfono con el número marcado, pero no llama automáticamente (es más seguro)
+                    String numeroLimpio = telefono.replaceAll("[\\s-]", "");
+                    if (!numeroLimpio.startsWith("+")) {
+                        numeroLimpio = "+34" + numeroLimpio;
+                    }
                     Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse("tel:" + telefono));
+                    intent.setData(Uri.parse("tel:" + numeroLimpio));
                     startActivity(intent);
                 } else {
                     Toast.makeText(AvisoDetalleActivity.this, "No hay número de teléfono", Toast.LENGTH_SHORT).show();
@@ -114,20 +137,16 @@ public class AvisoDetalleActivity extends AppCompatActivity {
             });
         }
 
-        // Botón Navegar (Google Maps)
+        // Botón Navegar
         if (btnNavegar != null) {
             btnNavegar.setOnClickListener(v -> {
                 if (direccion != null && !direccion.isEmpty()) {
-                    // geo:0,0?q=  busca esa dirección exacta en la app de mapas
                     Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(direccion));
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                    // Le decimos que preferimos usar Google Maps
                     mapIntent.setPackage("com.google.android.apps.maps");
-
                     try {
                         startActivity(mapIntent);
                     } catch (Exception e) {
-                        // Si no tiene Google Maps instalado, lo abrimos en el navegador web
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/search/?api=1&query=" + Uri.encode(direccion)));
                         startActivity(browserIntent);
                     }
@@ -137,8 +156,27 @@ public class AvisoDetalleActivity extends AppCompatActivity {
             });
         }
 
+        // 1. Definimos un "receptor" para cuando volvamos de la pantalla de progreso
+        ActivityResultLauncher<Intent> receptorProgreso = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    // Si la pantalla de progreso nos dice que el resultado fue OK
+                    if (result.getResultCode() == RESULT_OK) {
+                        // Significa que el técnico FINALIZÓ el trabajo.
+                        // Cerramos también esta pantalla para volver a la lista principal.
+                        finish();
+                    }
+                }
+        );
+
+        final long idAvisoFinal = idAviso;
+
         btnIniciarTrabajo.setOnClickListener(v -> {
-            Toast.makeText(AvisoDetalleActivity.this, "Iniciando trabajo...", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(AvisoDetalleActivity.this, TrabajoProgresoActivity.class);
+            intent.putExtra("CLIENTE", cliente);
+            intent.putExtra("ID_AVISO", idAvisoFinal);
+
+            receptorProgreso.launch(intent);
         });
     }
 }

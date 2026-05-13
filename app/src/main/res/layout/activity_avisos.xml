@@ -61,7 +61,7 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Campana con la notificación roja -->
+        <!-- notificación -->
         <FrameLayout
             android:id="@+id/btnCampana"
             android:layout_width="wrap_content"

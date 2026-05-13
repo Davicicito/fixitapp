@@ -74,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
                     intent.putExtra("TECNICO_ID", tecnicoLogueado.getId());
                     intent.putExtra("TECNICO_NOMBRE", tecnicoLogueado.getNombre());
-
-                    // 🔥 NUEVO: Metemos la especialidad en la mochila
                     intent.putExtra("TECNICO_ESPECIALIDAD", tecnicoLogueado.getEspecialidad());
 
                     startActivity(intent);
