@@ -16,8 +16,20 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Pantalla detallada que muestra toda la informacion de un parte de trabajo especifico.
+ * Permite al operario consultar la direccion, llamar al cliente por telefono, abrir la ruta
+ * en el mapa y finalmente iniciar la reparacion.
+ */
 public class AvisoDetalleActivity extends AppCompatActivity {
 
+    /**
+     * Metodo principal que se ejecuta al abrir la pantalla de detalles.
+     * Recupera los datos enviados desde la lista principal y configura la apariencia visual
+     * cambiando los colores y los iconos segun la especialidad del trabajo.
+     *
+     * @param savedInstanceState Estado previo de la actividad para restauracion de datos.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,9 +130,16 @@ public class AvisoDetalleActivity extends AppCompatActivity {
 
 
         // 6. ACCIONES DE LOS BOTONES
+        /**
+         * Finaliza la actividad actual para regresar a la pantalla anterior del listado.
+         */
         btnVolver.setOnClickListener(v -> finish());
 
         // Botón Llamar
+        /**
+         * Abre el marcador telefonico del movil con el numero del cliente ya escrito.
+         * Limpia el texto del telefono y añade el prefijo nacional para asegurar la llamada.
+         */
         if (btnLlamar != null) {
             btnLlamar.setOnClickListener(v -> {
                 if (telefono != null && !telefono.isEmpty()) {
@@ -138,6 +157,10 @@ public class AvisoDetalleActivity extends AppCompatActivity {
         }
 
         // Botón Navegar
+        /**
+         * Abre la aplicacion de Google Maps para guiar al tecnico hasta la direccion del cliente.
+         * Si el movil no tiene instalada la aplicacion de mapas intenta abrirla en el navegador.
+         */
         if (btnNavegar != null) {
             btnNavegar.setOnClickListener(v -> {
                 if (direccion != null && !direccion.isEmpty()) {
@@ -157,6 +180,11 @@ public class AvisoDetalleActivity extends AppCompatActivity {
         }
 
         // 1. Definimos un "receptor" para cuando volvamos de la pantalla de progreso
+        /**
+         * Escucha el resultado de la pantalla de reparacion en curso.
+         * Si el operario termina el trabajo correctamente esta pantalla se cerrara automaticamente
+         * para devolver al usuario a la lista general de tareas.
+         */
         ActivityResultLauncher<Intent> receptorProgreso = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -171,6 +199,10 @@ public class AvisoDetalleActivity extends AppCompatActivity {
 
         final long idAvisoFinal = idAviso;
 
+        /**
+         * Inicia el proceso de reparacion abriendo la pantalla de progreso.
+         * Envia el identificador de la averia y el nombre del cliente para que se muestren en la nueva actividad.
+         */
         btnIniciarTrabajo.setOnClickListener(v -> {
             Intent intent = new Intent(AvisoDetalleActivity.this, TrabajoProgresoActivity.class);
             intent.putExtra("CLIENTE", cliente);

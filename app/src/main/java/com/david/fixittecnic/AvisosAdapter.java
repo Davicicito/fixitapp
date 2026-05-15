@@ -13,14 +13,29 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Adaptador encargado de gestionar y mostrar la lista de avisos en la pantalla principal.
+ * Esta clase transforma los datos en bruto que vienen del servidor en tarjetas visuales,
+ * configurando los colores, los iconos y el formato de fecha para que el tecnico lo entienda rapido.
+ */
 public class AvisosAdapter extends RecyclerView.Adapter<AvisosAdapter.AvisoViewHolder> {
 
     private List<Aviso> listaAvisos;
 
+    /**
+     * Constructor que recibe la lista de trabajos descargados desde la API.
+     * @param listaAvisos Listado de objetos de tipo aviso.
+     */
     public AvisosAdapter(List<Aviso> listaAvisos) {
         this.listaAvisos = listaAvisos;
     }
 
+    /**
+     * Infla el diseño XML de cada tarjeta individual para que pueda ser utilizada en la lista.
+     * @param parent El grupo de vista donde se insertara la tarjeta.
+     * @param viewType El tipo de vista.
+     * @return Un nuevo contenedor de vistas para un aviso.
+     */
     @NonNull
     @Override
     public AvisoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -28,6 +43,14 @@ public class AvisosAdapter extends RecyclerView.Adapter<AvisosAdapter.AvisoViewH
         return new AvisoViewHolder(view);
     }
 
+    /**
+     * Une los datos de un aviso concreto con los elementos visuales de la tarjeta.
+     * Procesa la logica de colores segun la prioridad y formatea la fecha para mostrar
+     * el texto Hoy si la averia ha entrado en el dia actual.
+     *
+     * @param holder El contenedor de los elementos graficos.
+     * @param position La posicion del aviso dentro de la lista.
+     */
     @Override
     public void onBindViewHolder(@NonNull AvisoViewHolder holder, int position) {
         Aviso aviso = listaAvisos.get(position);
@@ -107,6 +130,11 @@ public class AvisosAdapter extends RecyclerView.Adapter<AvisosAdapter.AvisoViewH
         final String fechaFinalParaIntent = textoFechaHora;
 
 
+        /**
+         * Configura el evento de clic para cada tarjeta de la lista.
+         * Al pulsar sobre un aviso, se prepara un paquete de datos con toda la informacion
+         * y se abre la pantalla de detalle para que el tecnico vea el parte completo.
+         */
         holder.itemView.setOnClickListener(v -> {
             android.content.Intent intent = new android.content.Intent(v.getContext(), AvisoDetalleActivity.class);
 
@@ -130,11 +158,20 @@ public class AvisosAdapter extends RecyclerView.Adapter<AvisosAdapter.AvisoViewH
         });
     }
 
+    /**
+     * Indica al sistema cuantos elementos tiene la lista en total.
+     * @return El numero total de avisos.
+     */
     @Override
     public int getItemCount() {
         return listaAvisos.size();
     }
 
+    /**
+     * Clase interna que referencia todos los elementos visuales de la tarjeta de aviso.
+     * Sirve para que el adaptador pueda acceder rapidamente a los textos e imagenes
+     * sin tener que buscarlos cada vez, mejorando el rendimiento del movil.
+     */
     public static class AvisoViewHolder extends RecyclerView.ViewHolder {
         TextView txtCliente, txtDescripcion, txtPrioridad, txtDireccion, txtHora, txtNombreCategoria;
         FrameLayout contenedorIcono;

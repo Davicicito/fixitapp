@@ -15,6 +15,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Pantalla principal de la aplicacion que muestra el listado de tareas asignadas al tecnico.
+ * Se encarga de conectar con la API para descargar los avisos, ordenarlos por fecha y
+ * gestionar el acceso al perfil del usuario.
+ */
 public class AvisosActivity extends AppCompatActivity {
 
     private TextView lblNombreTecnico;
@@ -26,6 +31,13 @@ public class AvisosActivity extends AppCompatActivity {
     private View btnPerfil;
     private Long idTecnicoGlobal;
 
+    /**
+     * Prepara la interfaz de usuario al iniciar la actividad.
+     * Configura el adaptador para la lista, recupera los datos del tecnico enviados desde el login
+     * y programa los botones para actualizar la lista o ver el perfil.
+     *
+     * @param savedInstanceState Estado de la instancia para recuperar datos previos.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +65,9 @@ public class AvisosActivity extends AppCompatActivity {
 
         if (idTecnicoGlobal != -1L) {
             if (btnCampana != null) {
+                /**
+                 * Accion manual para refrescar el listado de trabajos pendientes.
+                 */
                 btnCampana.setOnClickListener(v -> {
                     Toast.makeText(AvisosActivity.this, "Actualizando avisos...", Toast.LENGTH_SHORT).show();
                     cargarAvisosDelServidor(idTecnicoGlobal);
@@ -61,6 +76,9 @@ public class AvisosActivity extends AppCompatActivity {
         }
 
         if (btnPerfil != null) {
+            /**
+             * Abre la pantalla de perfil del tecnico enviando su nombre y especialidad.
+             */
             btnPerfil.setOnClickListener(v -> {
                 Intent intent = new Intent(AvisosActivity.this, PerfilActivity.class);
                 intent.putExtra("TECNICO_NOMBRE", nombre);
@@ -70,6 +88,11 @@ public class AvisosActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Se ejecuta cada vez que el usuario vuelve a esta pantalla.
+     * Sirve para asegurar que la lista de trabajos este siempre actualizada, por ejemplo
+     * despues de haber finalizado una reparacion.
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -79,6 +102,13 @@ public class AvisosActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Realiza una peticion al servidor para obtener las averias vinculadas al empleado.
+     * Una vez recibida la informacion, ordena los avisos de mas reciente a mas antiguo
+     * y actualiza los contadores de notificaciones de la pantalla.
+     *
+     * @param idTecnico El numero identificador del operario.
+     */
     private void cargarAvisosDelServidor(Long idTecnico) {
         RetrofitClient.getApiService().getAvisosPorTecnico(idTecnico).enqueue(new Callback<List<Aviso>>() {
             @Override
